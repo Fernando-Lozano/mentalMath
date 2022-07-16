@@ -11,6 +11,9 @@ const answerDisplay = document.querySelector("#answer");
 let lastActive = navLinks[0];
 let operator = "+";
 let equations = []; // keeps a list of equations to do
+let answerTime = 3000; // amount of time allowed to answer the equation
+let answeredInTime = true; // keeps track of equation being answered within a time frame
+let answerTimeout;
 
 makeEquations(operator);
 numDisplay.textContent = equations[0].num;
@@ -48,17 +51,26 @@ backBtn.addEventListener("click", () => {
   answerDisplay.textContent = answerDisplay.textContent.slice(0, -1);
 });
 
+function timeToAnswer() {
+  answeredInTime = false;
+}
+
 checkBtn.addEventListener("click", async function() {
   if (Number(answerDisplay.textContent) === equations[0].answer) {
-    equations.push(getEquation(operator));
+    clearTimeout(answerTimeout);
+    if (!answeredInTime) {
+      equations.push(equations[0]);
+    } else {
+      equations.push(getEquation(operator));
+    }
     equations.shift();
     answerDisplay.textContent = "✔";
     await setTimeout(function() {
       numDisplay.textContent = equations[0].num;
       denDisplay.textContent = equations[0].den;
       answerDisplay.textContent = "";
+      answerTimeout = setTimeout(timeToAnswer, answerTime);
     },500);
-
   } else {
     equations.push(equations[0]);
     equations.shift();
@@ -67,8 +79,10 @@ checkBtn.addEventListener("click", async function() {
       numDisplay.textContent = equations[0].num;
       denDisplay.textContent = equations[0].den;
       answerDisplay.textContent = "";
+      answerTimeout = setTimeout(timeToAnswer, answerTime);
     },500);
   }
+  answeredInTime = true;
 });
 
 function makeEquations(operator) {
