@@ -10,13 +10,12 @@ const answerDisplay = document.querySelector("#answer");
 
 let lastActive = navLinks[0];
 let operator = "+";
+let equations = []; // keeps a list of equations to do
 
-let num = Math.floor(Math.random() * 13);
-let den = Math.floor(Math.random() * 13);
-let answer = eval(`${num}${operator}${den}`);
+makeEquations(operator);
+numDisplay.textContent = equations[0].num;
+denDisplay.textContent = equations[0].den;
 
-numDisplay.textContent = num;
-denDisplay.textContent = den;
 
 navLinks.forEach(function(link) {
   link.addEventListener("click", function(e) {
@@ -33,21 +32,9 @@ navLinks.forEach(function(link) {
 
     answerDisplay.textContent = "";
     
-    if (operator === "/") {
-      num = Math.floor(Math.random() * 13);
-      den = Math.floor(Math.random() * 13);
-      answer = eval(`${num}*${den}`);
-  
-      numDisplay.textContent = answer;
-      denDisplay.textContent = den;
-    } else {
-      num = Math.floor(Math.random() * 13);
-      den = Math.floor(Math.random() * 13);
-      answer = eval(`${num}${operator}${den}`);
-  
-      numDisplay.textContent = num;
-      denDisplay.textContent = den;
-    }
+    makeEquations(operator);
+    numDisplay.textContent = equations[0].num;
+    denDisplay.textContent = equations[0].den;
   });
 });
 
@@ -61,15 +48,56 @@ backBtn.addEventListener("click", () => {
   answerDisplay.textContent = answerDisplay.textContent.slice(0, -1);
 });
 
-checkBtn.addEventListener("click", () => {
-  if (Number(answerDisplay.textContent) === answer) {
+checkBtn.addEventListener("click", async function() {
+  if (Number(answerDisplay.textContent) === equations[0].answer) {
     // add some animation for right answer
+    equations.push(getEquation(operator));
+    equations.shift();
+
+    answerDisplay.textContent = "✔";
+    await setTimeout(function() {
+      numDisplay.textContent = equations[0].num;
+      denDisplay.textContent = equations[0].den;
+      answerDisplay.textContent = "";
+    },500);
+
   } else {
-    // add some animation for wrong answer
-    // add equation to end of array
+    equations.push(equations[0]);
+    equations.shift();
+
+    answerDisplay.textContent = "✘";
+    await setTimeout(function() {
+      numDisplay.textContent = equations[0].num;
+      denDisplay.textContent = equations[0].den;
+      answerDisplay.textContent = "";
+    },500);
   }
 });
-
-// the idea for speeding up mental math here is to have ones you get wrong added to the list of upcoming equations
-// I will have a list of 6 equations in an array at any given time
-// for now, when operator is switched, the array will be re-populated
+function makeEquations(operator) {
+  equations = [];
+  for (let i = 0; i < 4; i++) {
+    equations.push(getEquation(operator));
+  }
+}
+function getEquation(operator) {
+  let equation = {};
+  if (operator === "/") {
+    let numOne = Math.floor(Math.random() * 13);
+    let numTwo= Math.floor(Math.random() * 13);
+    let answer = numOne * numTwo;
+    equation.num = answer;
+    equation.den = numTwo;
+    equation.answer = numOne;
+  } else if (operator === "-") {    
+    let numOne = Math.floor(Math.random() * 13);
+    let numTwo= Math.floor(Math.random() * 13);
+    equation.num = Math.max(numOne, numTwo);
+    equation.den = Math.min(numOne, numTwo);
+    equation.answer = eval(`${equation.num}${operator}${equation.den}`);
+  } else {
+    equation.num = Math.floor(Math.random() * 13);
+    equation.den = Math.floor(Math.random() * 13);
+    equation.answer = eval(`${equation.num}${operator}${equation.den}`);
+  }
+  return equation;
+}
