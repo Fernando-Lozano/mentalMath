@@ -50,10 +50,8 @@ backBtn.addEventListener("click", () => {
 
 checkBtn.addEventListener("click", async function() {
   if (Number(answerDisplay.textContent) === equations[0].answer) {
-    // add some animation for right answer
     equations.push(getEquation(operator));
     equations.shift();
-
     answerDisplay.textContent = "✔";
     await setTimeout(function() {
       numDisplay.textContent = equations[0].num;
@@ -64,7 +62,6 @@ checkBtn.addEventListener("click", async function() {
   } else {
     equations.push(equations[0]);
     equations.shift();
-
     answerDisplay.textContent = "✘";
     await setTimeout(function() {
       numDisplay.textContent = equations[0].num;
@@ -73,17 +70,19 @@ checkBtn.addEventListener("click", async function() {
     },500);
   }
 });
+
 function makeEquations(operator) {
   equations = [];
   for (let i = 0; i < 4; i++) {
     equations.push(getEquation(operator));
   }
 }
+
 function getEquation(operator) {
   let equation = {};
   if (operator === "/") {
     let numOne = Math.floor(Math.random() * 13);
-    let numTwo= Math.floor(Math.random() * 13);
+    let numTwo= Math.floor(Math.random() * 12) + 1;
     let answer = numOne * numTwo;
     equation.num = answer;
     equation.den = numTwo;
