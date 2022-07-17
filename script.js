@@ -26,7 +26,9 @@ navLinks.forEach(function(link) {
 
     // toggles active
     lastActive.classList.toggle("active");
+    lastActive.classList.toggle("text-secondary");
     this.classList.toggle("active");
+    this.classList.toggle("text-secondary");
     lastActive = this;
 
     // gets current operator
