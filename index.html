@@ -7,15 +7,13 @@
   <title>mental math</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
     <style>
       * {
       touch-action: manipulation;
-      }
-      body {
-        overflow: hidden;
-      }
-      .main {
-        margin-top: 140px;
+      font-family: 'Roboto Mono', monospace;
       }
       button {
         width: 80px;
@@ -27,6 +25,11 @@
       }
       a {
         font-size: 2rem !important;
+      }
+      @media (min-width: 768px) {
+        .description {
+          width: 50%;
+        }
       }
     </style>
 </head>
@@ -47,7 +50,7 @@
   </li>
 </ul>
 
-<div class="container d-flex flex-row justify-content-center main">
+<div class="container d-flex flex-row justify-content-center my-5">
   <div class="card bg-white shadow">
     <div class="container text-end w-75 mt-1 py-4 py-md-1">
       <h2 id="numberOne"></h2>
@@ -85,6 +88,12 @@
         </div>
       </div>
     </div>
+  </div>
+</div>
+<div class="container d-flex d-row justify-content-center">
+  <div class="p-2 description">
+    <h2>Mental Math Practice</h2>
+    <p>A mental math tool that covers the basic numbers from one to twelve. If you answer incorrectly or take too long to answer, the equation will re-surface in four rounds.</p>
   </div>
 </div>
 
