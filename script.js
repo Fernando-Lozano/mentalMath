@@ -96,17 +96,17 @@ function getEquation(operator) {
   let equation = {};
   if (operator === "/") {
     let numOne = Math.floor(Math.random() * 13);
-    let numTwo= Math.floor(Math.random() * 12) + 1;
+    let numTwo = Math.floor(Math.random() * 12) + 1;
     let answer = numOne * numTwo;
     equation.num = answer;
     equation.den = numTwo;
     equation.answer = numOne;
   } else if (operator === "-") {    
     let numOne = Math.floor(Math.random() * 13);
-    let numTwo= Math.floor(Math.random() * 13);
-    equation.num = Math.max(numOne, numTwo);
-    equation.den = Math.min(numOne, numTwo);
-    equation.answer = eval(`${equation.num}${operator}${equation.den}`);
+    let numTwo = Math.floor(Math.random() * 13);
+    equation.num = numOne + numTwo;
+    equation.den = numTwo;
+    equation.answer = numOne;
   } else {
     equation.num = Math.floor(Math.random() * 13);
     equation.den = Math.floor(Math.random() * 13);
